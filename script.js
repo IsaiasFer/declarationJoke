@@ -3,81 +3,97 @@ alert('Desde hace mucho eh querido preguntarte esto');
 alert('Me ah costado mucho valor decirte esto, pero...');
 alert('Te gustaria salir en una cita conmigo?'); */
 
-let btnYes = document.querySelector('#btn-yes');
-let btnNo = document.querySelector('#btn-no');
-let container = document.querySelector('#container');
-let introContainer = document.querySelector('.intro');
-let placeHolder = document.querySelector('h1');
+var btnYes = document.querySelector("#btn-yes");
+var btnNo = document.querySelector("#btn-no");
+var btn = document.querySelectorAll(".btn");
+btn = [...btn];
+var container = document.querySelector("#container");
+var introContainer = document.querySelector(".intro");
+var placeHolder = document.querySelector("h1");
 
-let x;
-let y;
+var x;
+var y;
 
-let spaceWidth = container.offsetWidth;
-let spaceHeight = container.offsetHeight;
-let btnWidth = btnNo.offsetWidth;
-let btnHeight = btnNo.offsetHeight;
+var spaceWidth = container.offsetWidth;
+var spaceHeight = container.offsetHeight;
+var btnWidth = btnNo.offsetWidth;
+var btnHeight = btnNo.offsetHeight;
 
-let maxSpaceWidht = spaceWidth - btnWidth;
-let maxSpaceHeight = spaceHeight - btnHeight;
-
-function hadlerBtnYes() {
-  alert('Enserio!!, Oh si, presentia que dirias que si');
-  alert('Ya te contacto por via mail');
+var maxSpaceWidht = spaceWidth - btnWidth;
+var maxSpaceHeight = spaceHeight - btnHeight;
+class Juego {
+  constructor() {}
+  Start() {
+    function hadlerBtnYes() {
+      alert("Enserio!!, Oh si, presentia que dirias que si");
+      alert("Ya te contacto por via mail");
+    }
+    function hadlerBtnNo() {
+      positionRandom();
+      btnNo.style.left = x + "px";
+      btnNo.style.top = y + "px";
+    }
+    function positionRandom() {
+      x =Math.floor (Math.random() * (maxSpaceWidht-btnNo.offsetWidth))
+      y =Math.floor(Math.random() * (maxSpaceHeight-btnNo.offsetHeight))
+      return x, y;
+    }
+    function aparecerBotones() {
+      btn.map((boton) => {
+        boton.style.display = "block";
+      });
+    }
+    const startIntro=async()=>{
+      setTimeout(aparecerBotones, 2000);
+      btnNo.addEventListener("mousemove", hadlerBtnNo);
+      btnYes.addEventListener("click", hadlerBtnYes);
+      aparecer(introContainer);
+      const primerMsj=await agregarTexto('Hola, como estas?')
+      const segundoMsj=await agregarTexto('Desde hace mucho eh querido preguntarte esto')
+      const terceroMsj=await agregarTexto('Me ah costado mucho valor decirte esto, pero...')
+      const cuartoMsj=await agregarTexto('Te gustaria salir en una cita conmigo?')
+      desaparecerTexto()
+    }
+    const isMobile = () => {
+      return (
+        navigator.userAgent.match(/Android/i) ||
+        navigator.userAgent.match(/webOS/i) ||
+        navigator.userAgent.match(/iPhone/i) ||
+        navigator.userAgent.match(/iPod/i) ||
+        navigator.userAgent.match(/iPad/i) ||
+        navigator.userAgent.match(/BlackBerry/i)
+      );
+    };
+    const oscurecer = (elemento) => {
+      elemento.style.opacity = 0;
+    };
+    const aparecer = (elemento) => {
+      elemento.style.opacity = 1;
+    };
+    const desaparecerIntro = () => {
+      oscurecer(introContainer);
+      introContainer.style.display = "none";
+    };
+    function agregarTexto(texto){
+      return new Promise((resolve,reject)=>{
+      placeHolder.textContent=texto
+      aparecer(placeHolder)
+      setTimeout(oscurecer,2000,placeHolder)
+      setTimeout(()=>resolve('ok'),2000)
+      })};
+    const desaparecerTexto = () => {
+      /* oscurecer(placeHolder); */
+      oscurecer(introContainer)
+      setTimeout(desaparecerIntro, 1000);
+    };
+    if (isMobile()) {
+      btnNo.addEventListener("mousemove", hadlerBtnNo);
+      btnYes.addEventListener("click", hadlerBtnYes);
+    }
+    setTimeout(startIntro, 500);
+  }
 }
 
-function hadlerBtnNo() {
-  positionRandom();
-  btnNo.style.left = x + 'px';
-  btnNo.style.top = y + 'px';
-}
+var declarationJoke = new Juego();
 
-function positionRandom() {
-  x = Math.floor(Math.random() * maxSpaceWidht);
-  y = Math.floor(Math.random() * maxSpaceHeight);
-  return x, y;
-}
-
-function isMobile(){
-  return (
-      (navigator.userAgent.match(/Android/i)) ||
-      (navigator.userAgent.match(/webOS/i)) ||
-      (navigator.userAgent.match(/iPhone/i)) ||
-      (navigator.userAgent.match(/iPod/i)) ||
-      (navigator.userAgent.match(/iPad/i)) ||
-      (navigator.userAgent.match(/BlackBerry/i))
-  );
-}
-function oscurecer(elemento){
-  elemento.style.opacity=0;
-}
-function aparecer(elemento){
-  elemento.style.opacity=1;
-}
-function desaparecerIntro(){
-  introContainer.style.display = 'none';
-}
-function agregarTexto(){
-  placeHolder.append('Hace un tiempo quería decirte esto..')
-  placeHolder.style.opacity=1
-  setTimeout(eliminarTexto,2000)
-}
-function eliminarTexto(){
-  oscurecer(placeHolder)
-  /* oscurecer(introContainer) */
-  setTimeout(desaparecerIntro,3000)
-}
-function intro(){
-  introContainer.style.display = 'flex';
-  setTimeout(agregarTexto,1000)
-}
-
-
-window.addEventListener('load',intro)
-
-btnNo.addEventListener('mousemove', hadlerBtnNo);
-btnYes.addEventListener('click', hadlerBtnYes);
-
-if (isMobile()) {
-  btnNo.addEventListener('mousemove', hadlerBtnNo);
-  btnYes.addEventListener('click', hadlerBtnYes);
-}
+window.addEventListener("load", declarationJoke.Start());

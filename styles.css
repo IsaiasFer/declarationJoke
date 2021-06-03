@@ -32,6 +32,7 @@ body {
   border: none;
   z-index: 1;
   cursor: pointer;
+  display:none
 }
 .button-yes:hover {
   background: #c263e7;
@@ -50,7 +51,7 @@ body {
   right: 0;
 }
 .intro{
-  display: none;
+  display: flex;
   box-sizing: border-box;
   width: 50%;
   height: 50vh;
