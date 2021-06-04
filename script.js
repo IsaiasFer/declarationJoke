@@ -24,9 +24,14 @@ var maxSpaceHeight = spaceHeight - btnHeight;
 class Juego {
   constructor() {}
   Start() {
-    function hadlerBtnYes() {
-      alert("Enserio!!, Oh si, presentia que dirias que si");
-      alert("Ya te contacto por via mail");
+    async function hadlerBtnYes() {
+      /* alert("Enserio!!, Oh si, presentia que dirias que si");
+      alert("Ya te contacto por via mail"); */
+      introContainer.style.display='flex'
+      aparecer(introContainer);
+      const primerMsj=await agregarTexto(`♥♥ Siempre supe que me querías..
+      nos vemos muy pronto... ♥♥` )
+      desaparecerTexto()
     }
     function hadlerBtnNo() {
       positionRandom();
@@ -49,8 +54,8 @@ class Juego {
       btnYes.addEventListener("click", hadlerBtnYes);
       aparecer(introContainer);
       const primerMsj=await agregarTexto('Hola, como estas?')
-      const segundoMsj=await agregarTexto('Desde hace mucho eh querido preguntarte esto')
-      const terceroMsj=await agregarTexto('Me ah costado mucho valor decirte esto, pero...')
+      const segundoMsj=await agregarTexto('Desde hace mucho he querido preguntarte esto')
+      const terceroMsj=await agregarTexto('Me ha costado mucho valor decirte esto, pero...')
       const cuartoMsj=await agregarTexto('Te gustaria salir en una cita conmigo?')
       desaparecerTexto()
     }
@@ -79,16 +84,19 @@ class Juego {
       placeHolder.textContent=texto
       aparecer(placeHolder)
       setTimeout(oscurecer,2000,placeHolder)
-      setTimeout(()=>resolve('ok'),2000)
+      setTimeout(()=>resolve('ok'),2500)
       })};
     const desaparecerTexto = () => {
-      /* oscurecer(placeHolder); */
       oscurecer(introContainer)
       setTimeout(desaparecerIntro, 1000);
     };
     if (isMobile()) {
       btnNo.addEventListener("mousemove", hadlerBtnNo);
       btnYes.addEventListener("click", hadlerBtnYes);
+      btn.map((boton)=>{
+        boton.style.transition='unset'
+      })
+      introContainer.classList.add('intro-movil')
     }
     setTimeout(startIntro, 500);
   }
